@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguimiento — SAPERE AUDE</title>
+  <meta name="description" content="Consulta en un solo lugar el estado de tus asesorías y tu formación en SAPERE AUDE.">
+  <meta name="robots" content="noindex">
+
+  <!--
+    Guardia de acceso (idéntico al de dashboard.html, reservas.html, chat.html
+    y perfil.html, ver comentario allá): si no hay una sesión válida en
+    'sapereaude_sesion', se redirige de inmediato a login.html antes de
+    pintar contenido privado. La lógica completa de Seguimiento vive en
+    main.js — ver initSeguimientoPage().
+  -->
+  <script>
+    (function () {
+      try {
+        var raw = window.localStorage.getItem('sapereaude_sesion');
+        var session = raw ? JSON.parse(raw) : null;
+        if (!session || !session.loggedIn || !session.userId) {
+          window.location.replace('login.html');
+        } else if (session.rol === 'administrador') {
+          // El Panel de Administración es una interfaz aparte (ver admin.html):
+          // una cuenta con rol "administrador" no usa este panel de usuario.
+          window.location.replace('admin.html');
+        }
+      } catch (error) {
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboard">
+
+    <!-- Fondo oscuro tras el sidebar cuando está abierto en móvil -->
+    <div class="dashboard__overlay" id="dashboard-overlay"></div>
+
+    <!-- ======================================================
+         SIDEBAR (misma estructura que dashboard.html, reservas.html,
+         chat.html y perfil.html)
+         ====================================================== -->
+    <aside class="dashboard__sidebar" id="dashboard-sidebar">
+
+      <div class="dashboard__sidebar-header">
+        <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al sitio principal">
+          <span class="logo__mark">SA</span>
+          <span class="logo__text">SAPERE AUDE</span>
+        </a>
+        <button type="button" class="dashboard-sidebar-close" id="dashboard-sidebar-close" aria-label="Cerrar menú">&times;</button>
+      </div>
+
+      <nav class="dashboard-nav" aria-label="Navegación del panel">
+        <ul class="dashboard-nav__list">
+          <li><a href="dashboard.html" class="dashboard-nav__link">Inicio</a></li>
+          <li><a href="reservas.html" class="dashboard-nav__link">Mis reservas</a></li>
+          <li><a href="formacion.html" class="dashboard-nav__link">Formación</a></li>
+          <li><a href="formacion.html#mis-cursos" class="dashboard-nav__link">Mis cursos</a></li>
+          <li><a href="recursos.html" class="dashboard-nav__link">Recursos</a></li>
+          <li><a href="chat.html" class="dashboard-nav__link">Mensajes</a></li>
+          <li><a href="seguimiento.html" class="dashboard-nav__link is-active" aria-current="page">Seguimiento</a></li>
+          <li><a href="pagos.html" class="dashboard-nav__link">Pagos</a></li>
+          <li><a href="perfil.html" class="dashboard-nav__link">Mi perfil</a></li>
+        </ul>
+      </nav>
+
+      <div class="dashboard-sidebar__footer">
+        <button type="button" class="dashboard-nav__logout" id="dashboard-logout">Cerrar sesión</button>
+      </div>
+
+    </aside>
+
+    <!-- ======================================================
+         COLUMNA PRINCIPAL (topbar + contenido)
+         ====================================================== -->
+    <div class="dashboard__body">
+
+      <!-- TOPBAR (misma estructura que dashboard.html, rellenada por initDashboardPage()) -->
+      <header class="dashboard__topbar">
+        <button type="button" class="dashboard-sidebar-toggle" id="dashboard-sidebar-toggle" aria-expanded="false" aria-controls="dashboard-sidebar">
+          <span></span><span></span><span></span>
+          <span class="sr-only">Abrir menú del panel</span>
+        </button>
+
+        <p class="dashboard__topbar-title">Seguimiento</p>
+
+        <div class="dashboard__topbar-actions">
+          <button type="button" class="dashboard-notif" aria-label="Notificaciones">
+            <span class="dashboard-notif__dot" aria-hidden="true"></span>
+          </button>
+
+          <div class="dashboard-user">
+            <span class="dashboard-user__avatar" id="dashboard-avatar" aria-hidden="true">--</span>
+            <span class="dashboard-user__info">
+              <span class="dashboard-user__name" id="dashboard-user-name">Cargando…</span>
+              <span class="dashboard-user__type" id="dashboard-user-type">—</span>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="dashboard__main" id="main-content">
+
+        <!-- Todo el bloque de Seguimiento vive dentro de #seguimiento-page: es
+             el elemento que initSeguimientoPage() usa como guardia para saber
+             que está en esta página (ver js/main.js). -->
+        <section id="seguimiento-page">
+
+          <section class="dashboard-welcome">
+            <h1 class="dashboard-welcome__title">Seguimiento</h1>
+            <p class="dashboard-welcome__text">
+              Consulta en un solo lugar el estado de tus asesorías y de tu formación
+              en SAPERE AUDE. Esta vista solo muestra información real de tu cuenta:
+              tus reservas y tus cursos, con el mismo estado que ya ves en
+              "Mis reservas" y "Mis cursos".
+            </p>
+          </section>
+
+          <!-- Resumen: contadores calculados en tiempo real a partir de las
+               reservas e inscripciones reales del usuario (ver
+               renderSeguimientoResumen() en js/main.js). Ningún número aquí
+               es inventado: si no hay datos, se muestra 0. -->
+          <section class="dashboard-grid" id="seguimiento-resumen" aria-label="Resumen de tus procesos">
+            <!-- Rellenado por initSeguimientoPage() -->
+          </section>
+
+          <!-- ======================================================
+               ASESORÍAS Y CONSULTORÍA (a partir de sapereaude_reservas)
+               ====================================================== -->
+          <section class="dashboard-section" id="seguimiento-reservas-section" aria-labelledby="seguimiento-reservas-title">
+            <div class="dashboard-section__header">
+              <h2 id="seguimiento-reservas-title" class="section__title">Asesorías y consultoría</h2>
+              <a href="reservas.html" class="link-arrow">Gestionar en Mis reservas</a>
+            </div>
+
+            <!-- Rellenado por renderSeguimientoReservas() en js/main.js -->
+            <div class="reservas-grid" id="seguimiento-reservas-lista" hidden></div>
+
+            <div class="reservas-empty" id="seguimiento-reservas-vacia" hidden>
+              <p>Todavía no tienes asesorías agendadas.</p>
+              <a href="reservas.html" class="btn btn--primary">Agendar una asesoría</a>
+            </div>
+          </section>
+
+          <!-- ======================================================
+               FORMACIÓN (a partir de sapereaude_cursos_usuario)
+               ====================================================== -->
+          <section class="dashboard-section" id="seguimiento-cursos-section" aria-labelledby="seguimiento-cursos-title">
+            <div class="dashboard-section__header">
+              <h2 id="seguimiento-cursos-title" class="section__title">Formación</h2>
+              <a href="formacion.html#mis-cursos" class="link-arrow">Gestionar en Mis cursos</a>
+            </div>
+
+            <!-- Rellenado por renderSeguimientoCursos() en js/main.js -->
+            <div class="reservas-grid" id="seguimiento-cursos-lista" hidden></div>
+
+            <div class="reservas-empty" id="seguimiento-cursos-vacia" hidden>
+              <p>Todavía no te has inscrito en ningún curso.</p>
+              <a href="formacion.html" class="btn btn--primary">Explorar formación</a>
+            </div>
+          </section>
+
+          <!-- ======================================================
+               PAGOS SIMULADOS (a partir de sapereaude_pagos)
+               Ver initSeguimientoPage() en js/main.js. Todos los registros
+               que aparecen aquí corresponden a simulaciones académicas
+               creadas en pagos.html: nunca a cobros reales.
+               ====================================================== -->
+          <section class="dashboard-section" id="seguimiento-pagos-section" aria-labelledby="seguimiento-pagos-title">
+            <div class="dashboard-section__header">
+              <h2 id="seguimiento-pagos-title" class="section__title">Pagos (simulados)</h2>
+              <a href="pagos.html" class="link-arrow">Ir a Simulación de pagos</a>
+            </div>
+
+            <!-- Rellenado por renderSeguimientoPagos() en js/main.js -->
+            <div class="reservas-grid" id="seguimiento-pagos-lista" hidden></div>
+
+            <div class="reservas-empty" id="seguimiento-pagos-vacia" hidden>
+              <p>Todavía no tienes simulaciones de pago registradas.</p>
+              <a href="pagos.html" class="btn btn--primary">Simular un pago</a>
+            </div>
+          </section>
+
+          <!-- Nota de alcance: aclara qué es real y qué queda pendiente en este
+               prototipo académico, tal como pide el proyecto para cualquier
+               información de seguimiento. -->
+          <section class="dashboard-section" aria-labelledby="seguimiento-nota-title">
+            <div class="dashboard-section__header">
+              <h2 id="seguimiento-nota-title" class="section__title">Sobre esta información</h2>
+            </div>
+            <div class="dashboard-card">
+              <p class="dashboard-card__empty">
+                Este prototipo académico solo muestra el estado real de tus reservas,
+                tus cursos y tus simulaciones de pago, calculado a partir de tus
+                propias acciones en la plataforma (agendar, cancelar, inscribirte,
+                avanzar módulos, simular un pago). Los pagos que aparecen aquí son
+                siempre simulaciones académicas con valores demostrativos: la
+                plataforma no procesa cobros reales ni se conecta con bancos o
+                pasarelas de pago.
+              </p>
+            </div>
+          </section>
+
+        </section>
+
+        <footer class="dashboard-footer">
+          <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Script del proyecto (compartido por todas las páginas) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

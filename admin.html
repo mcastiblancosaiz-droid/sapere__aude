@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración — SAPERE AUDE</title>
+  <meta name="description" content="Panel de administración de SAPERE AUDE: usuarios, servicios, reservas, formación, consultas y pagos simulados.">
+  <meta name="robots" content="noindex">
+
+  <!--
+    Guardia de acceso del Panel de Administración.
+
+    Se ejecuta ANTES de pintar el resto de la página (por eso no lleva
+    "defer"), igual que en dashboard.html, reservas.html, chat.html,
+    perfil.html, seguimiento.html y pagos.html. La diferencia con esas
+    páginas es que aquí, además de exigir una sesión válida, se exige que
+    esa sesión tenga rol "administrador": un usuario normal que escriba
+    esta URL a mano, o que manipule el navegador para llegar hasta aquí sin
+    haber iniciado sesión como administrador, es enviado de vuelta a su
+    propio dashboard.html, nunca a este panel.
+
+    LÍMITE DE SEGURIDAD (léase junto con isAdmin() en js/main.js, sección
+    7): este prototipo no tiene backend, así que esta comprobación ocurre
+    enteramente en el navegador de la persona, a partir de un valor
+    guardado en localStorage. Esto impide el acceso por la navegación
+    normal del sitio, pero NO es una protección de nivel producción: quien
+    tenga acceso a las herramientas de desarrollador de su propio navegador
+    podría, en teoría, editar ese valor a mano y ver esta página pintarse
+    un instante antes de que initAdminPage() (sección 18 de main.js) vuelva
+    a comprobar el rol y redirija. Una aplicación real necesitaría verificar
+    el rol en un servidor antes de entregar cualquier dato administrativo,
+    no solo antes de mostrar la página.
+  -->
+  <script>
+    (function () {
+      try {
+        var raw = window.localStorage.getItem('sapereaude_sesion');
+        var session = raw ? JSON.parse(raw) : null;
+        if (!session || !session.loggedIn || !session.userId) {
+          window.location.replace('login.html');
+        } else if (session.rol !== 'administrador') {
+          window.location.replace('dashboard.html');
+        }
+      } catch (error) {
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboard">
+
+    <!-- Fondo oscuro tras el sidebar cuando está abierto en móvil -->
+    <div class="dashboard__overlay" id="dashboard-overlay"></div>
+
+    <!-- ======================================================
+         SIDEBAR — navegación PROPIA del administrador (no la del usuario):
+         Panel → Usuarios → Servicios → Reservas → Formación → Consultas →
+         Pagos simulados → Cerrar sesión. No son enlaces a otras páginas:
+         todo el panel vive en admin.html y cambia de vista con JS
+         (initAdminPage(), sección 18 de js/main.js).
+         ====================================================== -->
+    <aside class="dashboard__sidebar" id="dashboard-sidebar">
+
+      <div class="dashboard__sidebar-header">
+        <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al sitio principal">
+          <span class="logo__mark">SA</span>
+          <span class="logo__text">SAPERE AUDE</span>
+        </a>
+        <button type="button" class="dashboard-sidebar-close" id="dashboard-sidebar-close" aria-label="Cerrar menú">&times;</button>
+      </div>
+
+      <nav class="dashboard-nav" aria-label="Navegación del Panel de Administración">
+        <ul class="dashboard-nav__list">
+          <li><button type="button" class="dashboard-nav__link" data-admin-view="resumen">Panel</button></li>
+          <li><button type="button" class="dashboard-nav__link" data-admin-view="usuarios">Usuarios</button></li>
+          <li><button type="button" class="dashboard-nav__link" data-admin-view="servicios">Servicios</button></li>
+          <li><button type="button" class="dashboard-nav__link" data-admin-view="reservas">Reservas</button></li>
+          <li><button type="button" class="dashboard-nav__link" data-admin-view="formacion">Formación</button></li>
+          <li><button type="button" class="dashboard-nav__link" data-admin-view="consultas">Consultas</button></li>
+          <li><button type="button" class="dashboard-nav__link" data-admin-view="pagos">Pagos simulados</button></li>
+        </ul>
+      </nav>
+
+      <div class="dashboard-sidebar__footer">
+        <button type="button" class="dashboard-nav__logout" id="dashboard-logout">Cerrar sesión</button>
+      </div>
+
+    </aside>
+
+    <!-- ======================================================
+         COLUMNA PRINCIPAL (topbar + contenido)
+         ====================================================== -->
+    <div class="dashboard__body">
+
+      <!-- TOPBAR: reutiliza los mismos ids que dashboard.html (rellenados
+           por initDashboardPage(), sección 8), más el badge de rol propio
+           de este panel (initAdminPage() lo completa, sección 18). -->
+      <header class="dashboard__topbar">
+        <button type="button" class="dashboard-sidebar-toggle" id="dashboard-sidebar-toggle" aria-expanded="false" aria-controls="dashboard-sidebar">
+          <span></span><span></span><span></span>
+          <span class="sr-only">Abrir menú del panel</span>
+        </button>
+
+        <p class="dashboard__topbar-title">Panel de Administración</p>
+
+        <div class="dashboard__topbar-actions">
+          <span class="admin-role-badge" id="admin-role-badge">Administrador · SAPERE AUDE</span>
+
+          <div class="dashboard-user">
+            <span class="dashboard-user__avatar" id="dashboard-avatar" aria-hidden="true">--</span>
+            <span class="dashboard-user__info">
+              <span class="dashboard-user__name" id="dashboard-user-name">Cargando…</span>
+              <span class="dashboard-user__type" id="dashboard-user-type">—</span>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="dashboard__main" id="main-content">
+
+        <!-- Todo el Panel de Administración vive dentro de #admin-page: es
+             el elemento que initAdminPage() usa como guardia para saber que
+             está en esta página (ver js/main.js, sección 18). -->
+        <section id="admin-page">
+
+          <section class="dashboard-welcome">
+            <h1 class="dashboard-welcome__title">Panel de Administración</h1>
+            <p class="dashboard-welcome__text">
+              Vista de solo lectura (salvo el estado de las solicitudes de servicio) sobre
+              los datos reales de este prototipo: usuarios, servicios solicitados, reservas,
+              formación, consultas del Chat y pagos simulados. Ningún número que se muestra
+              aquí está inventado — si no hay datos, el panel simplemente lo indica.
+            </p>
+          </section>
+
+          <!-- ======================================================
+               VISTA: RESUMEN
+               ====================================================== -->
+          <section class="admin-view" id="admin-view-resumen">
+            <div class="dashboard-section__header">
+              <h2 class="section__title">Resumen general</h2>
+              <button type="button" class="btn btn--ghost" id="admin-eliminar-demo">Eliminar datos de prueba (DEMO)</button>
+            </div>
+
+            <section class="dashboard-grid" id="admin-resumen-grid" aria-label="Resumen de la plataforma">
+              <!-- Rellenado por renderResumen() dentro de initAdminPage() -->
+            </section>
+
+            <div class="dashboard-card">
+              <h2 class="dashboard-card__title">Sobre este panel</h2>
+              <p class="dashboard-card__hint">
+                Este es un prototipo académico sin backend ni base de datos: todo lo que ves
+                aquí vive únicamente en el localStorage de este navegador. Los registros
+                marcados con la etiqueta <span class="admin-demo-tag">DEMO</span> fueron
+                creados automáticamente para poder presentar el panel y pueden eliminarse
+                con el botón de arriba; el resto son datos reales generados por el uso del
+                prototipo (registro, reservas, inscripciones, chat, pagos simulados) en este
+                mismo navegador.
+              </p>
+            </div>
+          </section>
+
+          <!-- ======================================================
+               VISTA: USUARIOS
+               ====================================================== -->
+          <section class="admin-view" id="admin-view-usuarios" hidden>
+            <div class="dashboard-section__header">
+              <h2 class="section__title">Usuarios registrados</h2>
+            </div>
+            <p class="admin-view__intro">
+              Nombre, correo, fecha de registro, rol y estado de cada cuenta creada en este
+              navegador. Las contraseñas nunca se muestran: solo se guarda su hash con salt
+              (ver sección 1.1 de js/main.js), nunca en texto plano.
+            </p>
+            <div id="admin-usuarios-tabla"></div>
+          </section>
+
+          <!-- ======================================================
+               VISTA: SERVICIOS (solicitudes del formulario de contacto)
+               ====================================================== -->
+          <section class="admin-view" id="admin-view-servicios" hidden>
+            <div class="dashboard-section__header">
+              <h2 class="section__title">Solicitudes de servicios</h2>
+            </div>
+            <p class="admin-view__intro">
+              Cada envío del formulario de Contacto se registra aquí como una solicitud de
+              servicio. El estado puede actualizarse desde este panel (Pendiente, Confirmado,
+              Atendido o Cancelado); el cambio se guarda de inmediato en este navegador.
+            </p>
+            <div id="admin-servicios-tabla"></div>
+          </section>
+
+          <!-- ======================================================
+               VISTA: RESERVAS
+               ====================================================== -->
+          <section class="admin-view" id="admin-view-reservas" hidden>
+            <div class="dashboard-section__header">
+              <h2 class="section__title">Reservas</h2>
+            </div>
+            <p class="admin-view__intro">
+              Todas las asesorías agendadas por todos los usuarios de este navegador, con el
+              mismo estado que ya ven en "Mis reservas" (Confirmada / Cancelada).
+            </p>
+            <div id="admin-reservas-tabla"></div>
+          </section>
+
+          <!-- ======================================================
+               VISTA: FORMACIÓN / INSCRIPCIONES
+               ====================================================== -->
+          <section class="admin-view" id="admin-view-formacion" hidden>
+            <div class="dashboard-section__header">
+              <h2 class="section__title">Formación / Inscripciones</h2>
+            </div>
+            <p class="admin-view__intro">
+              Inscripciones reales a cursos, con su fecha y su estado (En progreso /
+              Completado), igual que en "Mis cursos".
+            </p>
+            <div id="admin-formacion-tabla"></div>
+          </section>
+
+          <!-- ======================================================
+               VISTA: CONSULTAS (chat demostrativo)
+               ====================================================== -->
+          <section class="admin-view" id="admin-view-consultas" hidden>
+            <div class="dashboard-section__header">
+              <h2 class="section__title">Consultas</h2>
+            </div>
+            <p class="admin-view__intro">
+              Resumen de las conversaciones reales del Chat de demostración (Mensajes):
+              usuario, asesor de demostración, cantidad de mensajes y fecha del último. El
+              Chat es un prototipo de mensajería sin conexión en tiempo real y sin asesores
+              reales conectados; aquí solo se muestra lo que ya quedó guardado, nunca una
+              conversación inventada.
+            </p>
+            <div id="admin-consultas-tabla"></div>
+          </section>
+
+          <!-- ======================================================
+               VISTA: PAGOS SIMULADOS
+               ====================================================== -->
+          <section class="admin-view" id="admin-view-pagos" hidden>
+            <div class="dashboard-section__header">
+              <h2 class="section__title">Pagos simulados</h2>
+            </div>
+            <p class="admin-view__intro">
+              Únicamente simulaciones académicas expresadas en Unidades Demostrativas (UD):
+              esta plataforma no procesa cobros reales ni guarda datos de tarjetas.
+            </p>
+            <div id="admin-pagos-tabla"></div>
+          </section>
+
+        </section>
+
+        <footer class="dashboard-footer">
+          <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Script del proyecto (compartido por todas las páginas) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

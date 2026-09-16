@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi perfil — SAPERE AUDE</title>
+  <meta name="description" content="Consulta y edita la información de tu cuenta en SAPERE AUDE.">
+  <meta name="robots" content="noindex">
+
+  <!--
+    Guardia de acceso (idéntico al de dashboard.html, reservas.html y
+    chat.html, ver comentario allá): si no hay una sesión válida en
+    'sapereaude_sesion', se redirige de inmediato a login.html antes de
+    pintar contenido privado. La lógica completa de Mi Perfil vive en
+    main.js — ver initPerfilPage().
+  -->
+  <script>
+    (function () {
+      try {
+        var raw = window.localStorage.getItem('sapereaude_sesion');
+        var session = raw ? JSON.parse(raw) : null;
+        if (!session || !session.loggedIn || !session.userId) {
+          window.location.replace('login.html');
+        } else if (session.rol === 'administrador') {
+          // El Panel de Administración es una interfaz aparte (ver admin.html):
+          // una cuenta con rol "administrador" no usa este panel de usuario.
+          window.location.replace('admin.html');
+        }
+      } catch (error) {
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboard">
+
+    <!-- Fondo oscuro tras el sidebar cuando está abierto en móvil -->
+    <div class="dashboard__overlay" id="dashboard-overlay"></div>
+
+    <!-- ======================================================
+         SIDEBAR (misma estructura que dashboard.html, reservas.html y chat.html)
+         ====================================================== -->
+    <aside class="dashboard__sidebar" id="dashboard-sidebar">
+
+      <div class="dashboard__sidebar-header">
+        <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al sitio principal">
+          <span class="logo__mark">SA</span>
+          <span class="logo__text">SAPERE AUDE</span>
+        </a>
+        <button type="button" class="dashboard-sidebar-close" id="dashboard-sidebar-close" aria-label="Cerrar menú">&times;</button>
+      </div>
+
+      <nav class="dashboard-nav" aria-label="Navegación del panel">
+        <ul class="dashboard-nav__list">
+          <li><a href="dashboard.html" class="dashboard-nav__link">Inicio</a></li>
+          <li><a href="reservas.html" class="dashboard-nav__link">Mis reservas</a></li>
+          <li><a href="formacion.html" class="dashboard-nav__link">Formación</a></li>
+          <li><a href="formacion.html#mis-cursos" class="dashboard-nav__link">Mis cursos</a></li>
+          <li><a href="recursos.html" class="dashboard-nav__link">Recursos</a></li>
+          <li><a href="chat.html" class="dashboard-nav__link">Mensajes</a></li>
+          <li><a href="seguimiento.html" class="dashboard-nav__link">Seguimiento</a></li>
+          <li><a href="pagos.html" class="dashboard-nav__link">Pagos</a></li>
+          <li><a href="perfil.html" class="dashboard-nav__link is-active" aria-current="page">Mi perfil</a></li>
+        </ul>
+      </nav>
+
+      <div class="dashboard-sidebar__footer">
+        <button type="button" class="dashboard-nav__logout" id="dashboard-logout">Cerrar sesión</button>
+      </div>
+
+    </aside>
+
+    <!-- ======================================================
+         COLUMNA PRINCIPAL (topbar + contenido)
+         ====================================================== -->
+    <div class="dashboard__body">
+
+      <!-- TOPBAR (misma estructura que dashboard.html, rellenada por initDashboardPage()) -->
+      <header class="dashboard__topbar">
+        <button type="button" class="dashboard-sidebar-toggle" id="dashboard-sidebar-toggle" aria-expanded="false" aria-controls="dashboard-sidebar">
+          <span></span><span></span><span></span>
+          <span class="sr-only">Abrir menú del panel</span>
+        </button>
+
+        <p class="dashboard__topbar-title">Mi perfil</p>
+
+        <div class="dashboard__topbar-actions">
+          <button type="button" class="dashboard-notif" aria-label="Notificaciones">
+            <span class="dashboard-notif__dot" aria-hidden="true"></span>
+          </button>
+
+          <div class="dashboard-user">
+            <span class="dashboard-user__avatar" id="dashboard-avatar" aria-hidden="true">--</span>
+            <span class="dashboard-user__info">
+              <span class="dashboard-user__name" id="dashboard-user-name">Cargando…</span>
+              <span class="dashboard-user__type" id="dashboard-user-type">—</span>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="dashboard__main" id="main-content">
+
+        <!-- Todo el bloque de Mi Perfil vive dentro de #perfil-page: es el
+             elemento que initPerfilPage() usa como guardia para saber que
+             está en esta página (ver js/main.js). -->
+        <section id="perfil-page">
+
+          <section class="dashboard-welcome">
+            <h1 class="dashboard-welcome__title">Mi perfil</h1>
+            <p class="dashboard-welcome__text">
+              Consulta y actualiza la información de tu cuenta. Solo se muestran los
+              datos que realmente se guardaron al crear tu cuenta en SAPERE AUDE.
+            </p>
+          </section>
+
+          <section class="dashboard-section" aria-labelledby="perfil-datos-title">
+            <div class="dashboard-section__header">
+              <h2 id="perfil-datos-title" class="section__title">Datos de la cuenta</h2>
+            </div>
+
+            <div class="dashboard-card">
+              <form class="form-grid" id="perfil-form" novalidate>
+
+                <div class="form-group">
+                  <label for="perfil-nombre" class="form-label">Nombre</label>
+                  <input type="text" id="perfil-nombre" name="nombre" class="form-input" required maxlength="80">
+                  <p class="form-error" id="perfil-nombre-error"></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="perfil-apellido" class="form-label">Apellido</label>
+                  <input type="text" id="perfil-apellido" name="apellido" class="form-input" required maxlength="80">
+                  <p class="form-error" id="perfil-apellido-error"></p>
+                </div>
+
+                <div class="form-group form-group--full">
+                  <label for="perfil-correo" class="form-label">Correo electrónico</label>
+                  <input type="email" id="perfil-correo" name="correo" class="form-input" required maxlength="120">
+                  <p class="form-error" id="perfil-correo-error"></p>
+                </div>
+
+                <div class="form-group form-group--full">
+                  <span class="form-label">Tipo de usuario</span>
+                  <div class="user-type-group">
+                    <input type="radio" id="perfil-tipo-estudiante" name="tipo-usuario" value="estudiante">
+                    <label for="perfil-tipo-estudiante" class="user-type-option">Estudiante</label>
+
+                    <input type="radio" id="perfil-tipo-profesional" name="tipo-usuario" value="profesional">
+                    <label for="perfil-tipo-profesional" class="user-type-option">Profesional</label>
+
+                    <input type="radio" id="perfil-tipo-empresa" name="tipo-usuario" value="empresa">
+                    <label for="perfil-tipo-empresa" class="user-type-option">Empresa / Organización</label>
+                  </div>
+                </div>
+
+                <div class="form-group form-group--full form-actions">
+                  <button type="submit" class="btn btn--primary btn--lg" id="perfil-submit">Guardar cambios</button>
+                  <p class="form-error" id="perfil-form-error"></p>
+                  <p class="form-success" id="perfil-form-success" role="status" aria-live="polite">
+                    Tus datos se actualizaron correctamente.
+                  </p>
+                </div>
+
+              </form>
+            </div>
+          </section>
+
+          <!-- Contraseña: fuera de alcance por ahora (ver informe). No se
+               muestra ni se permite editar la contraseña almacenada. -->
+          <section class="dashboard-section" aria-labelledby="perfil-password-title">
+            <div class="dashboard-section__header">
+              <h2 id="perfil-password-title" class="section__title">Contraseña</h2>
+            </div>
+            <div class="dashboard-card">
+              <p class="dashboard-card__empty">
+                El cambio de contraseña todavía no está disponible en esta versión de la plataforma.
+              </p>
+            </div>
+          </section>
+
+        </section>
+
+        <footer class="dashboard-footer">
+          <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Script del proyecto (compartido por todas las páginas) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

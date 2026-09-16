@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nosotros — SAPERE AUDE</title>
+  <meta name="description" content="Conoce la historia, misión y valores de SAPERE AUDE, desde sus inicios en la enseñanza de idiomas hasta la asesoría académica y la consultoría organizacional.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       HEADER / NAVEGACIÓN PRINCIPAL
+       ====================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="container site-header__inner">
+
+      <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al inicio">
+        <span class="logo__mark">SA</span>
+        <span class="logo__text">SAPERE AUDE</span>
+      </a>
+
+      <!-- Botón de menú móvil (se activará con JavaScript en un módulo posterior) -->
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="sr-only">Abrir menú</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+        <ul class="primary-nav__list">
+          <li><a href="index.html" class="primary-nav__link">Inicio</a></li>
+          <li><a href="servicios.html" class="primary-nav__link">Servicios</a></li>
+          <li><a href="formacion.html" class="primary-nav__link">Formación</a></li>
+          <li><a href="recursos.html" class="primary-nav__link">Recursos</a></li>
+          <li><a href="nosotros.html" class="primary-nav__link is-active">Nosotros</a></li>
+          <li><a href="contacto.html" class="primary-nav__link">Contacto</a></li>
+        </ul>
+
+        <div class="primary-nav__actions" id="nav-actions">
+          <a href="login.html" class="btn btn--ghost" data-auth="guest">Iniciar sesión</a>
+          <a href="registro.html" class="btn btn--primary" data-auth="guest">Crear cuenta</a>
+          <span class="nav-greeting" data-auth="user" id="nav-greeting" hidden></span>
+          <a href="dashboard.html" class="btn btn--ghost" data-auth="user" id="nav-dashboard-link" hidden>Mi panel</a>
+          <button type="button" class="btn btn--ghost" data-auth="user" id="nav-logout" hidden>Cerrar sesión</button>
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ======================================================
+         ENCABEZADO DE PÁGINA
+         ====================================================== -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container page-hero__inner">
+        <p class="page-hero__kicker">Nosotros</p>
+        <h1 id="page-title" class="page-hero__title">De las clases de idiomas a la consultoría</h1>
+        <p class="page-hero__lead">
+          La historia de SAPERE AUDE y los principios que guían cada asesoría,
+          curso y proceso de consultoría.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         HISTORIA
+         ====================================================== -->
+    <section class="section origin" aria-labelledby="history-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="history-title" class="section__title">Nuestra historia</h2>
+          <p class="section__lead">
+            Un recorrido que partió de la enseñanza de idiomas y se amplió hacia
+            la asesoría académica y la consultoría organizacional.
+          </p>
+        </div>
+
+        <ol class="timeline">
+          <li class="timeline__item">
+            <p class="timeline__year">Origen</p>
+            <h3 class="timeline__title">Clases de inglés y francés</h3>
+            <p class="timeline__text">
+              SAPERE AUDE nació a partir de clases de idiomas, con un enfoque
+              cercano y metodológico hacia el aprendizaje.
+            </p>
+          </li>
+          <li class="timeline__item">
+            <p class="timeline__year">Expansión</p>
+            <h3 class="timeline__title">Asesorías académicas</h3>
+            <p class="timeline__text">
+              La experiencia en idiomas se extendió hacia la asesoría académica
+              en otras áreas del conocimiento.
+            </p>
+          </li>
+          <li class="timeline__item">
+            <p class="timeline__year">Consolidación</p>
+            <h3 class="timeline__title">Consultoría organizacional</h3>
+            <p class="timeline__text">
+              Con el tiempo, SAPERE AUDE amplió sus servicios hacia la consultoría
+              organizacional y de ciclo de proyectos para equipos de trabajo.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         PÚBLICO OBJETIVO
+         ====================================================== -->
+    <section class="section knowledge-areas" aria-labelledby="audience-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="audience-title" class="section__title">Público objetivo</h2>
+          <p class="section__lead">
+            SAPERE AUDE está pensado para dos tipos de público.
+          </p>
+        </div>
+
+        <div class="values__grid">
+          <article class="value-card">
+            <h3 class="value-card__title">Estudiantes universitarios</h3>
+            <p class="value-card__text">
+              Jóvenes aproximadamente entre 17 y 30 años, principalmente en Latinoamérica.
+            </p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-card__title">Empresas y organizaciones</h3>
+            <p class="value-card__text">
+              Equipos de trabajo y organizaciones interesadas en procesos de
+              capacitación y consultoría.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         PRESENCIA EN EL MUNDO
+         Representación visual del alcance internacional, sin afirmar países
+         o cifras específicas no confirmadas en el documento oficial.
+         ====================================================== -->
+    <section class="section presence" aria-labelledby="presence-title">
+      <div class="container presence__inner">
+        <div class="presence__text">
+          <h2 id="presence-title" class="section__title">Presencia en el mundo</h2>
+          <p class="section__lead">
+            SAPERE AUDE tiene alcance internacional, llegando a estudiantes,
+            profesionales y organizaciones más allá de un solo país.
+          </p>
+        </div>
+        <div class="presence-visual" aria-hidden="true">
+          <div class="presence-visual__globe"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         MISIÓN
+         ====================================================== -->
+    <section class="section mission" aria-labelledby="mission-title">
+      <div class="container mission__inner">
+        <h2 id="mission-title" class="mission__title">
+          Proporcionar servicios de asesorías académicas y consultoría
+          organizacional de alta calidad, orientados al fortalecimiento de las
+          competencias analíticas de estudiantes y equipos de trabajo, mediante
+          el uso de metodologías pedagógicas estructuradas, claras y adaptadas
+          a las necesidades tanto individuales como organizacionales.
+        </h2>
+        <p class="mission__caption">Nuestra misión</p>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         VALORES
+         ====================================================== -->
+    <section class="section knowledge-areas" aria-labelledby="values-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="values-title" class="section__title">Nuestros valores</h2>
+          <p class="section__lead">
+            Los principios que sostienen cada asesoría, curso y proceso de consultoría.
+          </p>
+        </div>
+
+        <div class="values__grid">
+          <article class="value-card">
+            <h3 class="value-card__title">Rigor pedagógico</h3>
+            <p class="value-card__text">
+              Cada proceso se apoya en metodologías estructuradas, no en improvisación.
+            </p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-card__title">Cercanía</h3>
+            <p class="value-card__text">
+              El acompañamiento se adapta a cada persona, equipo u organización.
+            </p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-card__title">Compromiso con los resultados</h3>
+            <p class="value-card__text">
+              Buscamos que cada asesoría y consultoría se traduzca en avances concretos.
+            </p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-card__title">Mejora continua</h3>
+            <p class="value-card__text">
+              Los contenidos y metodologías se revisan y se actualizan constantemente.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         PROPUESTA DE VALOR
+         ====================================================== -->
+    <section class="section cta-final" aria-labelledby="proposal-title">
+      <div class="container cta-final__inner">
+        <h2 id="proposal-title" class="cta-final__title">Una sola plataforma, un mismo estándar</h2>
+        <p class="cta-final__text">
+          Formación, asesoría académica y consultoría organizacional integradas
+          bajo un mismo enfoque pedagógico y el mismo estándar de calidad.
+        </p>
+        <div class="cta-final__actions">
+          <a href="servicios.html" class="btn btn--primary btn--lg">Ver servicios</a>
+          <a href="contacto.html" class="btn btn--ghost btn--lg">Hablar con nosotros</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+
+      <div class="site-footer__brand">
+        <span class="logo__text">SAPERE AUDE</span>
+        <p class="site-footer__tagline">E-Learning & Consultoría</p>
+        <a href="https://www.instagram.com/sapere.aude.asesorias" class="site-footer__social" target="_blank" rel="noopener">@sapere.aude.asesorias</a>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Plataforma">
+        <h3 class="site-footer__heading">Plataforma</h3>
+        <ul>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="formacion.html">Formación</a></li>
+          <li><a href="recursos.html">Recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Empresa">
+        <h3 class="site-footer__heading">Empresa</h3>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Cuenta">
+        <h3 class="site-footer__heading">Cuenta</h3>
+        <ul>
+          <li><a href="login.html">Iniciar sesión</a></li>
+          <li><a href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__bottom">
+        <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Script del proyecto (se construirá en el módulo de JavaScript) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

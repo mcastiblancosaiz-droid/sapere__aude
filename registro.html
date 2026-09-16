@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear cuenta — SAPERE AUDE</title>
+  <meta name="description" content="Crea tu cuenta en SAPERE AUDE como estudiante, profesional o empresa, y accede a asesorías, formación y recursos.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       HEADER / NAVEGACIÓN PRINCIPAL
+       ====================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="container site-header__inner">
+
+      <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al inicio">
+        <span class="logo__mark">SA</span>
+        <span class="logo__text">SAPERE AUDE</span>
+      </a>
+
+      <!-- Botón de menú móvil (se activará con JavaScript en un módulo posterior) -->
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="sr-only">Abrir menú</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+        <ul class="primary-nav__list">
+          <li><a href="index.html" class="primary-nav__link">Inicio</a></li>
+          <li><a href="servicios.html" class="primary-nav__link">Servicios</a></li>
+          <li><a href="formacion.html" class="primary-nav__link">Formación</a></li>
+          <li><a href="recursos.html" class="primary-nav__link">Recursos</a></li>
+          <li><a href="nosotros.html" class="primary-nav__link">Nosotros</a></li>
+          <li><a href="contacto.html" class="primary-nav__link">Contacto</a></li>
+        </ul>
+
+        <div class="primary-nav__actions" id="nav-actions">
+          <a href="login.html" class="btn btn--ghost" data-auth="guest">Iniciar sesión</a>
+          <a href="registro.html" class="btn btn--primary" data-auth="guest">Crear cuenta</a>
+          <span class="nav-greeting" data-auth="user" id="nav-greeting" hidden></span>
+          <a href="dashboard.html" class="btn btn--ghost" data-auth="user" id="nav-dashboard-link" hidden>Mi panel</a>
+          <button type="button" class="btn btn--ghost" data-auth="user" id="nav-logout" hidden>Cerrar sesión</button>
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ======================================================
+         CREACIÓN DE CUENTA
+         La lógica de registro se implementará en un módulo posterior.
+         ====================================================== -->
+    <section class="auth-section" aria-labelledby="registro-title">
+      <div class="container">
+        <div class="auth-card auth-card--wide">
+          <p class="auth-card__kicker">Únete a SAPERE AUDE</p>
+          <h1 id="registro-title" class="auth-card__title">Crear cuenta</h1>
+          <p class="auth-card__lead">Regístrate para acceder a asesorías, formación y recursos.</p>
+
+          <form id="registro-form" action="#" method="post" novalidate>
+
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label for="registro-nombre" class="form-label">Nombre</label>
+                <input type="text" id="registro-nombre" name="nombre" class="form-input" placeholder="Tu nombre" required maxlength="80">
+                <p class="form-error" id="registro-nombre-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="registro-apellido" class="form-label">Apellido</label>
+                <input type="text" id="registro-apellido" name="apellido" class="form-input" placeholder="Tu apellido" required maxlength="80">
+                <p class="form-error" id="registro-apellido-error"></p>
+              </div>
+
+              <div class="form-group form-group--full">
+                <label for="registro-correo" class="form-label">Correo electrónico</label>
+                <input type="email" id="registro-correo" name="correo" class="form-input" placeholder="tucorreo@ejemplo.com" required maxlength="120">
+                <p class="form-error" id="registro-correo-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="registro-password" class="form-label">Contraseña</label>
+                <input type="password" id="registro-password" name="password" class="form-input" placeholder="Crea una contraseña" required maxlength="72" autocomplete="new-password">
+                <p class="form-error" id="registro-password-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="registro-password-confirm" class="form-label">Confirmar contraseña</label>
+                <input type="password" id="registro-password-confirm" name="password-confirm" class="form-input" placeholder="Repite tu contraseña" required maxlength="72" autocomplete="new-password">
+                <p class="form-error" id="registro-password-confirm-error"></p>
+              </div>
+
+              <div class="form-group form-group--full">
+                <span class="form-label">Tipo de usuario</span>
+                <div class="user-type-group">
+                  <input type="radio" id="tipo-estudiante" name="tipo-usuario" value="estudiante" checked>
+                  <label for="tipo-estudiante" class="user-type-option">Estudiante</label>
+
+                  <input type="radio" id="tipo-profesional" name="tipo-usuario" value="profesional">
+                  <label for="tipo-profesional" class="user-type-option">Profesional</label>
+
+                  <input type="radio" id="tipo-empresa" name="tipo-usuario" value="empresa">
+                  <label for="tipo-empresa" class="user-type-option">Empresa / Organización</label>
+                </div>
+              </div>
+
+              <div class="form-group form-group--full">
+                <label class="form-checkbox-row">
+                  <input type="checkbox" id="registro-terminos" name="terminos" required>
+                  Acepto los términos y condiciones y la política de privacidad.
+                </label>
+                <p class="form-error" id="registro-terminos-error"></p>
+              </div>
+
+              <div class="form-group form-group--full form-actions">
+                <button type="submit" class="btn btn--primary btn--lg" id="registro-submit">Crear cuenta</button>
+                <p class="form-success" id="registro-form-success" role="status" aria-live="polite">
+                  Cuenta creada correctamente. Te llevaremos a iniciar sesión...
+                </p>
+              </div>
+
+            </div>
+          </form>
+
+          <p class="auth-switch">¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+
+      <div class="site-footer__brand">
+        <span class="logo__text">SAPERE AUDE</span>
+        <p class="site-footer__tagline">E-Learning & Consultoría</p>
+        <a href="https://www.instagram.com/sapere.aude.asesorias" class="site-footer__social" target="_blank" rel="noopener">@sapere.aude.asesorias</a>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Plataforma">
+        <h3 class="site-footer__heading">Plataforma</h3>
+        <ul>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="formacion.html">Formación</a></li>
+          <li><a href="recursos.html">Recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Empresa">
+        <h3 class="site-footer__heading">Empresa</h3>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Cuenta">
+        <h3 class="site-footer__heading">Cuenta</h3>
+        <ul>
+          <li><a href="login.html">Iniciar sesión</a></li>
+          <li><a href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__bottom">
+        <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Script del proyecto (se construirá en el módulo de JavaScript) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

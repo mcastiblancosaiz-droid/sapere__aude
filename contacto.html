@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto — SAPERE AUDE</title>
+  <meta name="description" content="Contáctanos para agendar una asesoría académica, inscribirte en un curso o iniciar un proceso de consultoría organizacional con SAPERE AUDE.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       HEADER / NAVEGACIÓN PRINCIPAL
+       ====================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="container site-header__inner">
+
+      <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al inicio">
+        <span class="logo__mark">SA</span>
+        <span class="logo__text">SAPERE AUDE</span>
+      </a>
+
+      <!-- Botón de menú móvil (se activará con JavaScript en un módulo posterior) -->
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="sr-only">Abrir menú</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+        <ul class="primary-nav__list">
+          <li><a href="index.html" class="primary-nav__link">Inicio</a></li>
+          <li><a href="servicios.html" class="primary-nav__link">Servicios</a></li>
+          <li><a href="formacion.html" class="primary-nav__link">Formación</a></li>
+          <li><a href="recursos.html" class="primary-nav__link">Recursos</a></li>
+          <li><a href="nosotros.html" class="primary-nav__link">Nosotros</a></li>
+          <li><a href="contacto.html" class="primary-nav__link is-active">Contacto</a></li>
+        </ul>
+
+        <div class="primary-nav__actions" id="nav-actions">
+          <a href="login.html" class="btn btn--ghost" data-auth="guest">Iniciar sesión</a>
+          <a href="registro.html" class="btn btn--primary" data-auth="guest">Crear cuenta</a>
+          <span class="nav-greeting" data-auth="user" id="nav-greeting" hidden></span>
+          <a href="dashboard.html" class="btn btn--ghost" data-auth="user" id="nav-dashboard-link" hidden>Mi panel</a>
+          <button type="button" class="btn btn--ghost" data-auth="user" id="nav-logout" hidden>Cerrar sesión</button>
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ======================================================
+         ENCABEZADO DE PÁGINA
+         ====================================================== -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container page-hero__inner">
+        <p class="page-hero__kicker">Contacto</p>
+        <h1 id="page-title" class="page-hero__title">Hablemos sobre tu proceso</h1>
+        <p class="page-hero__lead">
+          Escríbenos si buscas una asesoría académica, quieres inscribirte en un
+          curso o tu organización necesita un proceso de consultoría.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         INFORMACIÓN DE CONTACTO + FORMULARIO
+         ====================================================== -->
+    <section class="section" aria-labelledby="contact-form-title">
+      <div class="container">
+        <h2 id="contact-form-title" class="sr-only">Formulario de contacto</h2>
+
+        <div class="contact-layout">
+
+          <!-- Información de contacto -->
+          <div class="contact-info">
+            <div class="value-card">
+              <h3 class="value-card__title">Correo</h3>
+              <!-- Placeholder: reemplazar con el correo real de contacto -->
+              <p class="value-card__text">hola@sapereaude.com</p>
+            </div>
+            <div class="value-card">
+              <h3 class="value-card__title">Horario de atención</h3>
+              <p class="value-card__text">Lunes a viernes, en horario laboral</p>
+            </div>
+            <div class="value-card">
+              <h3 class="value-card__title">Tiempo de respuesta</h3>
+              <p class="value-card__text">Respondemos en menos de 48 horas hábiles</p>
+            </div>
+            <div class="value-card">
+              <h3 class="value-card__title">Instagram</h3>
+              <p class="value-card__text">
+                <a href="https://www.instagram.com/sapere.aude.asesorias" class="link-arrow" target="_blank" rel="noopener">@sapere.aude.asesorias</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Formulario de contacto: JS valida y muestra confirmación (módulo de JavaScript) -->
+          <form class="form-grid" id="contact-form" action="#" method="post" novalidate>
+
+            <div class="form-group">
+              <label for="contact-name" class="form-label">Nombre completo</label>
+              <input type="text" id="contact-name" name="nombre" class="form-input" placeholder="Escribe tu nombre" required maxlength="80">
+              <p class="form-error" id="contact-name-error"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Correo electrónico</label>
+              <input type="email" id="contact-email" name="correo" class="form-input" placeholder="tucorreo@ejemplo.com" required maxlength="120">
+              <p class="form-error" id="contact-email-error"></p>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-user-type" class="form-label">Tipo de usuario</label>
+              <select id="contact-user-type" name="tipo-usuario" class="form-select">
+                <option value="estudiante">Estudiante</option>
+                <option value="profesional">Profesional</option>
+                <option value="empresa">Empresa / Organización</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-reason" class="form-label">Motivo de contacto</label>
+              <select id="contact-reason" name="motivo" class="form-select">
+                <option value="asesoria">Asesoría académica</option>
+                <option value="formacion">Formación y cursos</option>
+                <option value="consultoria">Consultoría organizacional</option>
+                <option value="proyectos">Consultoría de ciclo de proyectos</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+
+            <div class="form-group form-group--full">
+              <label for="contact-message" class="form-label">Mensaje</label>
+              <textarea id="contact-message" name="mensaje" class="form-textarea" placeholder="Cuéntanos brevemente qué necesitas" required maxlength="1000"></textarea>
+              <p class="form-error" id="contact-message-error"></p>
+            </div>
+
+            <div class="form-group form-group--full form-actions">
+              <button type="submit" class="btn btn--primary btn--lg">Enviar mensaje</button>
+              <p class="form-success" id="contact-form-success" role="status" aria-live="polite">
+                Tu solicitud fue registrada correctamente (demostración). Pronto te contactaremos.
+              </p>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+
+      <div class="site-footer__brand">
+        <span class="logo__text">SAPERE AUDE</span>
+        <p class="site-footer__tagline">E-Learning & Consultoría</p>
+        <a href="https://www.instagram.com/sapere.aude.asesorias" class="site-footer__social" target="_blank" rel="noopener">@sapere.aude.asesorias</a>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Plataforma">
+        <h3 class="site-footer__heading">Plataforma</h3>
+        <ul>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="formacion.html">Formación</a></li>
+          <li><a href="recursos.html">Recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Empresa">
+        <h3 class="site-footer__heading">Empresa</h3>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Cuenta">
+        <h3 class="site-footer__heading">Cuenta</h3>
+        <ul>
+          <li><a href="login.html">Iniciar sesión</a></li>
+          <li><a href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__bottom">
+        <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Script del proyecto (se construirá en el módulo de JavaScript) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

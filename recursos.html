@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursos — SAPERE AUDE</title>
+  <meta name="description" content="Biblioteca de recursos educativos de SAPERE AUDE: guías, plantillas, documentos y herramientas de apoyo.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       HEADER / NAVEGACIÓN PRINCIPAL
+       ====================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="container site-header__inner">
+
+      <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al inicio">
+        <span class="logo__mark">SA</span>
+        <span class="logo__text">SAPERE AUDE</span>
+      </a>
+
+      <!-- Botón de menú móvil (se activará con JavaScript en un módulo posterior) -->
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="sr-only">Abrir menú</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+        <ul class="primary-nav__list">
+          <li><a href="index.html" class="primary-nav__link">Inicio</a></li>
+          <li><a href="servicios.html" class="primary-nav__link">Servicios</a></li>
+          <li><a href="formacion.html" class="primary-nav__link">Formación</a></li>
+          <li><a href="recursos.html" class="primary-nav__link is-active">Recursos</a></li>
+          <li><a href="nosotros.html" class="primary-nav__link">Nosotros</a></li>
+          <li><a href="contacto.html" class="primary-nav__link">Contacto</a></li>
+        </ul>
+
+        <div class="primary-nav__actions" id="nav-actions">
+          <a href="login.html" class="btn btn--ghost" data-auth="guest">Iniciar sesión</a>
+          <a href="registro.html" class="btn btn--primary" data-auth="guest">Crear cuenta</a>
+          <span class="nav-greeting" data-auth="user" id="nav-greeting" hidden></span>
+          <a href="dashboard.html" class="btn btn--ghost" data-auth="user" id="nav-dashboard-link" hidden>Mi panel</a>
+          <button type="button" class="btn btn--ghost" data-auth="user" id="nav-logout" hidden>Cerrar sesión</button>
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ======================================================
+         ENCABEZADO DE PÁGINA
+         ====================================================== -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container page-hero__inner">
+        <p class="page-hero__kicker">Recursos</p>
+        <h1 id="page-title" class="page-hero__title">Biblioteca de recursos educativos</h1>
+        <p class="page-hero__lead">
+          Guías, plantillas, documentos y herramientas de apoyo para tus procesos
+          de aprendizaje, asesoría y consultoría.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         BÚSQUEDA Y FILTROS + LISTADO DE RECURSOS
+         ====================================================== -->
+    <section class="section services" aria-labelledby="resources-title">
+      <div class="container">
+        <h2 id="resources-title" class="sr-only">Buscar y filtrar recursos</h2>
+
+        <!-- Buscador y filtros: activados por js/main.js -->
+        <div class="filter-bar">
+          <div class="search-field">
+            <label for="resource-search" class="sr-only">Buscar recursos</label>
+            <input type="search" id="resource-search" class="search-field__input" placeholder="Buscar guías, plantillas, documentos...">
+          </div>
+          <div class="filter-chips" id="resource-filters" role="group" aria-label="Filtrar por categoría">
+            <button type="button" class="filter-chip is-active" data-filter="todos">Todos</button>
+            <button type="button" class="filter-chip" data-filter="guias">Guías</button>
+            <button type="button" class="filter-chip" data-filter="plantillas">Plantillas</button>
+            <button type="button" class="filter-chip" data-filter="documentos">Documentos</button>
+            <button type="button" class="filter-chip" data-filter="herramientas">Herramientas</button>
+          </div>
+        </div>
+
+        <!-- Vista: todos los recursos vs. guardados por el usuario. "Guardados"
+             requiere sesión iniciada (ver initResourceActions() en js/main.js);
+             si no hay sesión, se redirige a login.html al pulsarlo. -->
+        <div class="filter-chips resource-view-tabs" id="resource-view-tabs" role="group" aria-label="Vista de recursos">
+          <button type="button" class="filter-chip is-active" data-view="todos">Todos los recursos</button>
+          <button type="button" class="filter-chip" data-view="guardados">Mis recursos guardados</button>
+        </div>
+
+        <div class="resources__grid" id="resources-grid">
+
+          <article class="resource-card" data-category="guias" data-resource-id="guia-tecnicas-estudio">
+            <button type="button" class="resource-card__save" data-action="favorito" data-resource-id="guia-tecnicas-estudio" aria-pressed="false" aria-label="Guardar recurso">
+              <span class="resource-card__save-icon" aria-hidden="true"></span>
+            </button>
+            <div class="resource-card__icon" aria-hidden="true"></div>
+            <span class="tag tag--outline">Guía</span>
+            <h3 class="resource-card__title">Guía de técnicas de estudio</h3>
+            <p class="resource-card__text">
+              Estrategias prácticas para organizar el tiempo de estudio y mejorar la comprensión.
+            </p>
+            <div class="resource-card__footer">
+              <span class="course-card__duration">PDF</span>
+              <button type="button" class="btn btn--secondary" data-action="ver-recurso">Ver recurso</button>
+            </div>
+          </article>
+
+          <article class="resource-card" data-category="plantillas" data-resource-id="plantilla-plan-proyecto">
+            <button type="button" class="resource-card__save" data-action="favorito" data-resource-id="plantilla-plan-proyecto" aria-pressed="false" aria-label="Guardar recurso">
+              <span class="resource-card__save-icon" aria-hidden="true"></span>
+            </button>
+            <div class="resource-card__icon" aria-hidden="true"></div>
+            <span class="tag tag--outline">Plantilla</span>
+            <h3 class="resource-card__title">Plantilla de plan de proyecto</h3>
+            <p class="resource-card__text">
+              Estructura editable para formular objetivos, actividades y cronograma de un proyecto.
+            </p>
+            <div class="resource-card__footer">
+              <span class="course-card__duration">DOCX</span>
+              <button type="button" class="btn btn--secondary" data-action="descargar" data-resource-id="plantilla-plan-proyecto">Descargar</button>
+            </div>
+          </article>
+
+          <article class="resource-card" data-category="documentos" data-resource-id="glosario-administracion">
+            <button type="button" class="resource-card__save" data-action="favorito" data-resource-id="glosario-administracion" aria-pressed="false" aria-label="Guardar recurso">
+              <span class="resource-card__save-icon" aria-hidden="true"></span>
+            </button>
+            <div class="resource-card__icon" aria-hidden="true"></div>
+            <span class="tag tag--outline">Documento</span>
+            <h3 class="resource-card__title">Glosario de administración</h3>
+            <p class="resource-card__text">
+              Definiciones clave de términos usados en cursos y asesorías de administración.
+            </p>
+            <div class="resource-card__footer">
+              <span class="course-card__duration">PDF</span>
+              <button type="button" class="btn btn--secondary" data-action="ver-recurso">Ver recurso</button>
+            </div>
+          </article>
+
+          <article class="resource-card" data-category="herramientas" data-resource-id="checklist-seguimiento-proyectos">
+            <button type="button" class="resource-card__save" data-action="favorito" data-resource-id="checklist-seguimiento-proyectos" aria-pressed="false" aria-label="Guardar recurso">
+              <span class="resource-card__save-icon" aria-hidden="true"></span>
+            </button>
+            <div class="resource-card__icon" aria-hidden="true"></div>
+            <span class="tag tag--outline">Herramienta</span>
+            <h3 class="resource-card__title">Checklist de seguimiento de proyectos</h3>
+            <p class="resource-card__text">
+              Lista de verificación para acompañar cada etapa del ciclo de proyectos.
+            </p>
+            <div class="resource-card__footer">
+              <span class="course-card__duration">PDF</span>
+              <button type="button" class="btn btn--secondary" data-action="descargar" data-resource-id="checklist-seguimiento-proyectos">Descargar</button>
+            </div>
+          </article>
+
+          <article class="resource-card" data-category="guias" data-resource-id="guia-vocabulario-ingles">
+            <button type="button" class="resource-card__save" data-action="favorito" data-resource-id="guia-vocabulario-ingles" aria-pressed="false" aria-label="Guardar recurso">
+              <span class="resource-card__save-icon" aria-hidden="true"></span>
+            </button>
+            <div class="resource-card__icon" aria-hidden="true"></div>
+            <span class="tag tag--outline">Guía</span>
+            <h3 class="resource-card__title">Guía de vocabulario en inglés académico</h3>
+            <p class="resource-card__text">
+              Vocabulario frecuente para lectura y escritura de textos académicos en inglés.
+            </p>
+            <div class="resource-card__footer">
+              <span class="course-card__duration">PDF</span>
+              <button type="button" class="btn btn--secondary" data-action="ver-recurso">Ver recurso</button>
+            </div>
+          </article>
+
+          <article class="resource-card" data-category="plantillas" data-resource-id="plantilla-evaluacion-desempeno">
+            <button type="button" class="resource-card__save" data-action="favorito" data-resource-id="plantilla-evaluacion-desempeno" aria-pressed="false" aria-label="Guardar recurso">
+              <span class="resource-card__save-icon" aria-hidden="true"></span>
+            </button>
+            <div class="resource-card__icon" aria-hidden="true"></div>
+            <span class="tag tag--outline">Plantilla</span>
+            <h3 class="resource-card__title">Plantilla de evaluación de desempeño</h3>
+            <p class="resource-card__text">
+              Formato base para diseñar procesos de evaluación en equipos de trabajo.
+            </p>
+            <div class="resource-card__footer">
+              <span class="course-card__duration">XLSX</span>
+              <button type="button" class="btn btn--secondary" data-action="descargar" data-resource-id="plantilla-evaluacion-desempeno">Descargar</button>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Estado sin resultados: oculto por defecto, lo activa js/main.js.
+             El mismo elemento se reutiliza para "sin resultados de búsqueda/filtro"
+             y para "aún no tienes recursos guardados" (initRecursosPage cambia el texto). -->
+        <p class="resources__empty" id="resources-empty">
+          No encontramos recursos que coincidan con tu búsqueda o filtro.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+
+      <div class="site-footer__brand">
+        <span class="logo__text">SAPERE AUDE</span>
+        <p class="site-footer__tagline">E-Learning & Consultoría</p>
+        <a href="https://www.instagram.com/sapere.aude.asesorias" class="site-footer__social" target="_blank" rel="noopener">@sapere.aude.asesorias</a>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Plataforma">
+        <h3 class="site-footer__heading">Plataforma</h3>
+        <ul>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="formacion.html">Formación</a></li>
+          <li><a href="recursos.html">Recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Empresa">
+        <h3 class="site-footer__heading">Empresa</h3>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Cuenta">
+        <h3 class="site-footer__heading">Cuenta</h3>
+        <ul>
+          <li><a href="login.html">Iniciar sesión</a></li>
+          <li><a href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__bottom">
+        <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Modal de detalle de recurso: título, categoría, tipo, descripción,
+       contenido disponible, descargar y guardar/quitar de favoritos.
+       Misma estructura que el modal de reservas.html y formacion.html. -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-body">
+      <button type="button" class="modal__close" id="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Script del proyecto (compartido por todas las páginas) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

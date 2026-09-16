@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicios — SAPERE AUDE</title>
+  <meta name="description" content="Catálogo de servicios de SAPERE AUDE: asesorías académicas, apoyo académico, formación virtual, creación de contenido educativo, consultoría, capacitación organizacional y diseño de estrategias formativas.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       HEADER / NAVEGACIÓN PRINCIPAL
+       ====================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="container site-header__inner">
+
+      <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al inicio">
+        <span class="logo__mark">SA</span>
+        <span class="logo__text">SAPERE AUDE</span>
+      </a>
+
+      <!-- Botón de menú móvil (se activará con JavaScript en un módulo posterior) -->
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="sr-only">Abrir menú</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+        <ul class="primary-nav__list">
+          <li><a href="index.html" class="primary-nav__link">Inicio</a></li>
+          <li><a href="servicios.html" class="primary-nav__link is-active">Servicios</a></li>
+          <li><a href="formacion.html" class="primary-nav__link">Formación</a></li>
+          <li><a href="recursos.html" class="primary-nav__link">Recursos</a></li>
+          <li><a href="nosotros.html" class="primary-nav__link">Nosotros</a></li>
+          <li><a href="contacto.html" class="primary-nav__link">Contacto</a></li>
+        </ul>
+
+        <div class="primary-nav__actions" id="nav-actions">
+          <a href="login.html" class="btn btn--ghost" data-auth="guest">Iniciar sesión</a>
+          <a href="registro.html" class="btn btn--primary" data-auth="guest">Crear cuenta</a>
+          <span class="nav-greeting" data-auth="user" id="nav-greeting" hidden></span>
+          <a href="dashboard.html" class="btn btn--ghost" data-auth="user" id="nav-dashboard-link" hidden>Mi panel</a>
+          <button type="button" class="btn btn--ghost" data-auth="user" id="nav-logout" hidden>Cerrar sesión</button>
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ======================================================
+         ENCABEZADO DE PÁGINA
+         ====================================================== -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container page-hero__inner">
+        <p class="page-hero__kicker">Servicios</p>
+        <h1 id="page-title" class="page-hero__title">Asesoría y consultoría a la medida</h1>
+        <p class="page-hero__lead">
+          Siete líneas de servicio con un mismo enfoque pedagógico: fortalecer
+          competencias analíticas en personas y en equipos de trabajo.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         LISTADO DE SERVICIOS
+         ====================================================== -->
+    <section class="section services" aria-labelledby="services-list-title">
+      <div class="container">
+        <h2 id="services-list-title" class="sr-only">Listado de servicios</h2>
+
+        <div class="services__grid">
+
+          <article class="service-card service-card--detailed">
+            <div class="service-card__icon" data-icon="asesorias" aria-hidden="true"></div>
+            <h3 class="service-card__title">Asesorías académicas</h3>
+            <p class="service-card__text">
+              Acompañamiento personalizado para resolver dudas puntuales y
+              fortalecer competencias analíticas en distintas áreas del conocimiento.
+            </p>
+            <ul class="benefits-list">
+              <li>Clases individuales personalizadas y clases grupales por temática</li>
+              <li>Preparación para exámenes y refuerzo académico</li>
+              <li>Planes de estudio personalizados</li>
+            </ul>
+            <a href="contacto.html" class="btn btn--primary" data-booking-link>Agendar asesoría</a>
+          </article>
+
+          <article class="service-card service-card--detailed">
+            <div class="service-card__icon" data-icon="asesorias" aria-hidden="true"></div>
+            <h3 class="service-card__title">Apoyo en actividades académicas</h3>
+            <p class="service-card__text">
+              Acompañamiento cercano en el desarrollo de trabajos, proyectos y
+              sustentaciones académicas.
+            </p>
+            <ul class="benefits-list">
+              <li>Orientación y acompañamiento en proyectos académicos</li>
+              <li>Asesoría para sustentaciones</li>
+              <li>Resolución guiada, revisión y retroalimentación de trabajos</li>
+            </ul>
+            <a href="contacto.html" class="btn btn--primary" data-booking-link>Agendar asesoría</a>
+          </article>
+
+          <article class="service-card service-card--detailed">
+            <div class="service-card__icon" data-icon="formacion" aria-hidden="true"></div>
+            <h3 class="service-card__title">Formación virtual</h3>
+            <p class="service-card__text">
+              Cursos, microclases y bootcamps estructurados con objetivos claros,
+              pensados para aprender a tu propio ritmo y con seguimiento del progreso.
+            </p>
+            <ul class="benefits-list">
+              <li>Cursos virtuales por áreas y microclases</li>
+              <li>Programas de nivelación y de preparación de ingreso a la universidad</li>
+              <li>Talleres y bootcamps intensivos</li>
+            </ul>
+            <a href="formacion.html" class="btn btn--primary">Ver formación</a>
+          </article>
+
+          <article class="service-card service-card--detailed">
+            <div class="service-card__icon" data-icon="contenido" aria-hidden="true"></div>
+            <h3 class="service-card__title">Creación de contenido educativo</h3>
+            <p class="service-card__text">
+              Diseño de material didáctico y recursos de apoyo alineados con
+              metodologías pedagógicas estructuradas.
+            </p>
+            <ul class="benefits-list">
+              <li>Contenido académico para redes y videos educativos</li>
+              <li>Blog educativo, artículos y podcast formativo</li>
+              <li>Material académico descargable</li>
+            </ul>
+            <a href="contacto.html" class="btn btn--primary">Solicitar servicio</a>
+          </article>
+
+          <article class="service-card service-card--detailed">
+            <div class="service-card__icon" data-icon="proyectos" aria-hidden="true"></div>
+            <h3 class="service-card__title">Consultoría</h3>
+            <p class="service-card__text">
+              Apoyo en las distintas etapas del ciclo de proyectos, desde la
+              formulación hasta el seguimiento y la evaluación.
+            </p>
+            <ul class="benefits-list">
+              <li>Formulación de proyectos y estructuración de propuestas técnicas</li>
+              <li>Diseño de planes de trabajo y asesoría en las fases del proyecto</li>
+              <li>Optimización de recursos y procesos</li>
+            </ul>
+            <a href="contacto.html" class="btn btn--primary">Solicitar servicio</a>
+          </article>
+
+          <article class="service-card service-card--detailed">
+            <div class="service-card__icon" data-icon="consultoria" aria-hidden="true"></div>
+            <h3 class="service-card__title">Capacitación organizacional</h3>
+            <p class="service-card__text">
+              Asesoría a equipos y organizaciones orientada al fortalecimiento
+              de competencias analíticas y de gestión.
+            </p>
+            <ul class="benefits-list">
+              <li>Capacitación para equipos de trabajo</li>
+              <li>Talleres de competencias técnicas y entrenamiento práctico</li>
+              <li>Programas de actualización profesional</li>
+            </ul>
+            <a href="contacto.html" class="btn btn--primary">Solicitar servicio</a>
+          </article>
+
+          <article class="service-card service-card--detailed">
+            <div class="service-card__icon" data-icon="consultoria" aria-hidden="true"></div>
+            <h3 class="service-card__title">Diseño de estrategias y procesos formativos</h3>
+            <p class="service-card__text">
+              Estructuración de programas de formación con metodologías
+              pedagógicas claras y medibles.
+            </p>
+            <ul class="benefits-list">
+              <li>Diseño de programas de formación y mallas curriculares</li>
+              <li>Implementación de metodologías de aprendizaje</li>
+              <li>Evaluación y mejora de procesos formativos</li>
+            </ul>
+            <a href="contacto.html" class="btn btn--primary">Solicitar servicio</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         LLAMADO A LA ACCIÓN FINAL
+         ====================================================== -->
+    <section class="section cta-final" aria-labelledby="cta-final-title">
+      <div class="container cta-final__inner">
+        <h2 id="cta-final-title" class="cta-final__title">¿No sabes qué servicio necesitas?</h2>
+        <p class="cta-final__text">
+          Cuéntanos tu caso y te orientamos hacia la asesoría o consultoría
+          más adecuada para ti o tu organización.
+        </p>
+        <div class="cta-final__actions">
+          <a href="contacto.html" class="btn btn--primary btn--lg">Hablar con nosotros</a>
+          <a href="registro.html" class="btn btn--ghost btn--lg">Crear cuenta</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+
+      <div class="site-footer__brand">
+        <span class="logo__text">SAPERE AUDE</span>
+        <p class="site-footer__tagline">E-Learning & Consultoría</p>
+        <a href="https://www.instagram.com/sapere.aude.asesorias" class="site-footer__social" target="_blank" rel="noopener">@sapere.aude.asesorias</a>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Plataforma">
+        <h3 class="site-footer__heading">Plataforma</h3>
+        <ul>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="formacion.html">Formación</a></li>
+          <li><a href="recursos.html">Recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Empresa">
+        <h3 class="site-footer__heading">Empresa</h3>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Cuenta">
+        <h3 class="site-footer__heading">Cuenta</h3>
+        <ul>
+          <li><a href="login.html">Iniciar sesión</a></li>
+          <li><a href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__bottom">
+        <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Script del proyecto (se construirá en el módulo de JavaScript) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

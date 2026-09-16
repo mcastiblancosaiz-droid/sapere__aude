@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensajes — SAPERE AUDE</title>
+  <meta name="description" content="Chat de demostración con asesores de SAPERE AUDE: consulta tus conversaciones y envía mensajes desde tu panel privado.">
+  <meta name="robots" content="noindex">
+
+  <!--
+    Guardia de acceso (idéntico al de dashboard.html y reservas.html, ver
+    comentario allá): si no hay una sesión válida en 'sapereaude_sesion',
+    se redirige de inmediato a login.html antes de pintar contenido
+    privado. La lógica completa del Chat vive en main.js — ver
+    initChatPage().
+  -->
+  <script>
+    (function () {
+      try {
+        var raw = window.localStorage.getItem('sapereaude_sesion');
+        var session = raw ? JSON.parse(raw) : null;
+        if (!session || !session.loggedIn || !session.userId) {
+          window.location.replace('login.html');
+        } else if (session.rol === 'administrador') {
+          // El Panel de Administración es una interfaz aparte (ver admin.html):
+          // una cuenta con rol "administrador" no usa este panel de usuario.
+          window.location.replace('admin.html');
+        }
+      } catch (error) {
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboard">
+
+    <!-- Fondo oscuro tras el sidebar cuando está abierto en móvil -->
+    <div class="dashboard__overlay" id="dashboard-overlay"></div>
+
+    <!-- ======================================================
+         SIDEBAR (misma estructura que dashboard.html y reservas.html)
+         ====================================================== -->
+    <aside class="dashboard__sidebar" id="dashboard-sidebar">
+
+      <div class="dashboard__sidebar-header">
+        <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al sitio principal">
+          <span class="logo__mark">SA</span>
+          <span class="logo__text">SAPERE AUDE</span>
+        </a>
+        <button type="button" class="dashboard-sidebar-close" id="dashboard-sidebar-close" aria-label="Cerrar menú">&times;</button>
+      </div>
+
+      <nav class="dashboard-nav" aria-label="Navegación del panel">
+        <ul class="dashboard-nav__list">
+          <li><a href="dashboard.html" class="dashboard-nav__link">Inicio</a></li>
+          <li><a href="reservas.html" class="dashboard-nav__link">Mis reservas</a></li>
+          <li><a href="formacion.html" class="dashboard-nav__link">Formación</a></li>
+          <li><a href="formacion.html#mis-cursos" class="dashboard-nav__link">Mis cursos</a></li>
+          <li><a href="recursos.html" class="dashboard-nav__link">Recursos</a></li>
+          <li><a href="chat.html" class="dashboard-nav__link is-active" aria-current="page">Mensajes</a></li>
+          <li><a href="seguimiento.html" class="dashboard-nav__link">Seguimiento</a></li>
+          <li><a href="pagos.html" class="dashboard-nav__link">Pagos</a></li>
+          <li><a href="perfil.html" class="dashboard-nav__link">Mi perfil</a></li>
+        </ul>
+      </nav>
+
+      <div class="dashboard-sidebar__footer">
+        <button type="button" class="dashboard-nav__logout" id="dashboard-logout">Cerrar sesión</button>
+      </div>
+
+    </aside>
+
+    <!-- ======================================================
+         COLUMNA PRINCIPAL (topbar + contenido)
+         ====================================================== -->
+    <div class="dashboard__body">
+
+      <!-- TOPBAR (misma estructura que dashboard.html, rellenada por initDashboardPage()) -->
+      <header class="dashboard__topbar">
+        <button type="button" class="dashboard-sidebar-toggle" id="dashboard-sidebar-toggle" aria-expanded="false" aria-controls="dashboard-sidebar">
+          <span></span><span></span><span></span>
+          <span class="sr-only">Abrir menú del panel</span>
+        </button>
+
+        <p class="dashboard__topbar-title">Mensajes</p>
+
+        <div class="dashboard__topbar-actions">
+          <button type="button" class="dashboard-notif" aria-label="Notificaciones">
+            <span class="dashboard-notif__dot" aria-hidden="true"></span>
+          </button>
+
+          <div class="dashboard-user">
+            <span class="dashboard-user__avatar" id="dashboard-avatar" aria-hidden="true">--</span>
+            <span class="dashboard-user__info">
+              <span class="dashboard-user__name" id="dashboard-user-name">Cargando…</span>
+              <span class="dashboard-user__type" id="dashboard-user-type">—</span>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="dashboard__main" id="main-content">
+
+        <!-- Todo el bloque de Chat vive dentro de #chat-page: es el elemento
+             que initChatPage() usa como guardia para saber que está en esta
+             página (ver js/main.js, sección 12). -->
+        <section id="chat-page">
+
+          <section class="dashboard-welcome">
+            <h1 class="dashboard-welcome__title">Mensajes</h1>
+            <p class="dashboard-welcome__text">
+              Conversa con nuestros asesores de demostración. Este es un prototipo de
+              mensajería sin conexión en tiempo real: las respuestas son automáticas y
+              están claramente marcadas como demostrativas.
+            </p>
+          </section>
+
+          <div class="chat-layout" id="chat-layout">
+
+            <!-- ======================================================
+                 LISTA DE ASESORES / CONVERSACIONES
+                 ====================================================== -->
+            <aside class="chat-list" id="chat-list" aria-label="Conversaciones">
+              <div class="chat-list__header">
+                <h2 class="chat-list__title">Conversaciones</h2>
+                <button type="button" class="chat-list__new-btn" id="chat-new-message">Nuevo mensaje</button>
+              </div>
+              <p class="chat-list__hint">Asesores de demostración de SAPERE AUDE, no personas reales conectadas.</p>
+
+              <ul class="chat-advisors" id="chat-advisors-list">
+                <!-- Rellenado por renderAdvisorsList() en js/main.js -->
+              </ul>
+            </aside>
+
+            <!-- ======================================================
+                 CONVERSACIÓN ACTIVA
+                 ====================================================== -->
+            <section class="chat-conversation" id="chat-conversation" aria-label="Conversación">
+
+              <header class="chat-conversation__header">
+                <button type="button" class="chat-back" id="chat-back-btn" aria-label="Volver a conversaciones">&larr;</button>
+                <span class="chat-avatar" id="chat-current-avatar" aria-hidden="true">--</span>
+                <div class="chat-conversation__info">
+                  <span class="chat-conversation__name" id="chat-current-name">Selecciona un asesor</span>
+                  <span class="chat-conversation__specialty" id="chat-current-specialty">—</span>
+                </div>
+                <span class="chat-status" id="chat-current-status">
+                  <span class="chat-status__dot" aria-hidden="true"></span>Disponible
+                </span>
+              </header>
+
+              <div class="chat-messages" id="chat-messages" aria-live="polite">
+                <p class="chat-empty-state" id="chat-empty-state">Selecciona un asesor para comenzar a chatear.</p>
+              </div>
+
+              <form class="chat-input-row" id="chat-form">
+                <label for="chat-input" class="sr-only">Escribe tu mensaje</label>
+                <textarea id="chat-input" class="chat-input" rows="1" placeholder="Escribe tu mensaje..." disabled maxlength="1000"></textarea>
+                <button type="submit" class="btn btn--primary chat-send" id="chat-send-btn" disabled>Enviar</button>
+              </form>
+
+            </section>
+
+          </div>
+
+        </section>
+
+        <footer class="dashboard-footer">
+          <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Script del proyecto (compartido por todas las páginas) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

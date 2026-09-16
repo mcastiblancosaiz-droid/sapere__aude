@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursos de idiomas — SAPERE AUDE</title>
+  <meta name="description" content="Los cursos de SAPERE AUDE son de idiomas: inglés y francés. Las demás áreas se atienden mediante asesorías y consultorías.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       HEADER / NAVEGACIÓN PRINCIPAL
+       ====================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="container site-header__inner">
+
+      <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al inicio">
+        <span class="logo__mark">SA</span>
+        <span class="logo__text">SAPERE AUDE</span>
+      </a>
+
+      <!-- Botón de menú móvil (se activará con JavaScript en un módulo posterior) -->
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="sr-only">Abrir menú</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+        <ul class="primary-nav__list">
+          <li><a href="index.html" class="primary-nav__link">Inicio</a></li>
+          <li><a href="servicios.html" class="primary-nav__link">Servicios</a></li>
+          <li><a href="formacion.html" class="primary-nav__link is-active">Cursos</a></li>
+          <li><a href="recursos.html" class="primary-nav__link">Recursos</a></li>
+          <li><a href="nosotros.html" class="primary-nav__link">Nosotros</a></li>
+          <li><a href="contacto.html" class="primary-nav__link">Contacto</a></li>
+        </ul>
+
+        <div class="primary-nav__actions" id="nav-actions">
+          <a href="login.html" class="btn btn--ghost" data-auth="guest">Iniciar sesión</a>
+          <a href="registro.html" class="btn btn--primary" data-auth="guest">Crear cuenta</a>
+          <span class="nav-greeting" data-auth="user" id="nav-greeting" hidden></span>
+          <a href="dashboard.html" class="btn btn--ghost" data-auth="user" id="nav-dashboard-link" hidden>Mi panel</a>
+          <button type="button" class="btn btn--ghost" data-auth="user" id="nav-logout" hidden>Cerrar sesión</button>
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ======================================================
+         ENCABEZADO DE PÁGINA
+         ====================================================== -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container page-hero__inner">
+        <p class="page-hero__kicker">Cursos</p>
+        <h1 id="page-title" class="page-hero__title">Cursos de idiomas: inglés y francés</h1>
+        <p class="page-hero__lead">
+          Los cursos de SAPERE AUDE son de idiomas. Las demás áreas del conocimiento
+          —matemáticas, ciencias sociales, administración, salud y desarrollo
+          profesional— se acompañan mediante asesorías y consultorías, no como cursos.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         MIS CURSOS (solo usuarios autenticados)
+         Visible/oculto automáticamente por initSessionState() en js/main.js
+         a partir del atributo data-auth="user", igual que el resto del
+         sitio. El contenido real lo dibuja renderMisCursos() dentro de
+         initFormacionPage().
+         ====================================================== -->
+    <section class="section dashboard-section" id="mis-cursos" data-auth="user" hidden aria-labelledby="mis-cursos-title">
+      <div class="container">
+        <div class="dashboard-section__header">
+          <h2 id="mis-cursos-title" class="section__title">Mis cursos</h2>
+        </div>
+
+        <!-- Rellenado por renderMisCursos() en js/main.js -->
+        <div class="reservas-grid" id="mis-cursos-lista" hidden></div>
+
+        <div class="reservas-empty" id="mis-cursos-vacia" hidden>
+          <p>¡Aún no tienes cursos inscritos!</p>
+          <a href="#courses-title" class="btn btn--primary">Ver cursos de idiomas</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         MODALIDADES
+         ====================================================== -->
+    <section class="section" aria-labelledby="modalities-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="modalities-title" class="section__title">Modalidades</h2>
+          <p class="section__lead">
+            Los cursos virtuales de idiomas y las modalidades de acompañamiento que se
+            ofrecen como asesoría.
+          </p>
+        </div>
+        <ul class="knowledge-areas__list">
+          <li class="knowledge-areas__item">Cursos virtuales de inglés y francés</li>
+          <li class="knowledge-areas__item">Microclases</li>
+          <li class="knowledge-areas__item">Nivelación académica (asesoría)</li>
+          <li class="knowledge-areas__item">Preparación de ingreso a la universidad (asesoría)</li>
+          <li class="knowledge-areas__item">Talleres</li>
+          <li class="knowledge-areas__item">Bootcamps intensivos</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         CURSOS DE IDIOMAS
+         Únicos cursos de SAPERE AUDE. Las tarjetas con data-course-id son
+         las que initFormacionPage() (js/main.js) conecta con el modal de
+         detalle, la inscripción y el progreso.
+         ====================================================== -->
+    <section class="section services" aria-labelledby="courses-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="courses-title" class="section__title">Cursos de idiomas</h2>
+          <p class="section__lead">
+            Inglés y francés, con seguimiento del progreso dentro de la plataforma.
+          </p>
+        </div>
+
+        <div class="courses__grid" id="formacion-cursos-grid">
+
+          <article class="course-card" data-course-id="ingles-conversacional">
+            <div class="course-card__meta">
+              <span class="tag">Idiomas</span>
+              <span class="tag tag--outline">Nivel A2–B1</span>
+            </div>
+            <h3 class="course-card__title">Inglés conversacional</h3>
+            <p class="course-card__text">
+              Práctica oral guiada y vocabulario aplicado a situaciones cotidianas y profesionales.
+            </p>
+            <div class="course-card__footer">
+              <span class="course-card__duration">6 semanas</span>
+              <button type="button" class="btn btn--secondary" data-action="ver-curso">Ver curso</button>
+            </div>
+          </article>
+
+          <article class="course-card" data-course-id="frances-basico">
+            <div class="course-card__meta">
+              <span class="tag">Idiomas</span>
+              <span class="tag tag--outline">Nivel A1</span>
+            </div>
+            <h3 class="course-card__title">Francés básico</h3>
+            <p class="course-card__text">
+              Fundamentos de gramática, pronunciación y comprensión para comenzar desde cero.
+            </p>
+            <div class="course-card__footer">
+              <span class="course-card__duration">8 semanas</span>
+              <button type="button" class="btn btn--secondary" data-action="ver-curso">Ver curso</button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         ASESORÍAS Y CONSULTORÍAS POR ÁREA
+         Estas áreas NO son cursos: se atienden como asesorías o
+         consultorías y se agendan desde Reservas (o desde Contacto si la
+         persona todavía no tiene cuenta). Por eso sus tarjetas no llevan
+         data-course-id ni el botón "Ver curso".
+         ====================================================== -->
+    <section class="section knowledge-areas" aria-labelledby="asesorias-areas-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="asesorias-areas-title" class="section__title">Asesorías y consultorías por área</h2>
+          <p class="section__lead">
+            Estas áreas se acompañan de forma personalizada, no como cursos.
+          </p>
+        </div>
+
+        <div class="services__grid">
+
+          <article class="service-card">
+            <div class="service-card__icon" data-icon="asesorias" aria-hidden="true"></div>
+            <span class="tag tag--outline">Asesoría</span>
+            <h3 class="service-card__title">Matemáticas</h3>
+            <p class="service-card__text">
+              Resolución de problemas paso a paso, con énfasis en la interpretación de resultados.
+            </p>
+            <a href="reservas.html" class="btn btn--secondary" data-booking-link>Agendar asesoría</a>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__icon" data-icon="asesorias" aria-hidden="true"></div>
+            <span class="tag tag--outline">Asesoría</span>
+            <h3 class="service-card__title">Ciencias sociales</h3>
+            <p class="service-card__text">
+              Acompañamiento personalizado para resolver dudas puntuales y fortalecer
+              competencias analíticas.
+            </p>
+            <a href="reservas.html" class="btn btn--secondary" data-booking-link>Agendar asesoría</a>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__icon" data-icon="consultoria" aria-hidden="true"></div>
+            <span class="tag tag--outline">Asesoría</span>
+            <h3 class="service-card__title">Administración</h3>
+            <p class="service-card__text">
+              Apoyo en el ciclo de proyectos: formulación, ejecución, seguimiento y evaluación.
+            </p>
+            <a href="reservas.html" class="btn btn--secondary" data-booking-link>Agendar asesoría</a>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__icon" data-icon="asesorias" aria-hidden="true"></div>
+            <span class="tag tag--outline">Asesoría</span>
+            <h3 class="service-card__title">Enfermería y áreas de la salud</h3>
+            <p class="service-card__text">
+              Conceptos clave y buenas prácticas orientadas al desempeño en contextos clínicos.
+            </p>
+            <a href="reservas.html" class="btn btn--secondary" data-booking-link>Agendar asesoría</a>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__icon" data-icon="proyectos" aria-hidden="true"></div>
+            <span class="tag tag--outline">Consultoría</span>
+            <h3 class="service-card__title">Proyectos y procesos organizacionales</h3>
+            <p class="service-card__text">
+              Herramientas prácticas para estructurar el pensamiento analítico y acompañar
+              cada etapa del ciclo de proyectos en equipos de trabajo.
+            </p>
+            <a href="contacto.html" class="btn btn--secondary">Solicitar consultoría</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         LLAMADO A LA ACCIÓN FINAL
+         ====================================================== -->
+    <section class="section cta-final" aria-labelledby="cta-final-title">
+      <div class="container cta-final__inner">
+        <h2 id="cta-final-title" class="cta-final__title">Empieza a aprender hoy</h2>
+        <p class="cta-final__text">
+          Crea tu cuenta para inscribirte en los cursos de idiomas y agendar tus asesorías.
+        </p>
+        <div class="cta-final__actions">
+          <a href="registro.html" class="btn btn--primary btn--lg">Crear cuenta</a>
+          <a href="recursos.html" class="btn btn--ghost btn--lg">Ver recursos</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+
+      <div class="site-footer__brand">
+        <span class="logo__text">SAPERE AUDE</span>
+        <p class="site-footer__tagline">E-Learning & Consultoría</p>
+        <a href="https://www.instagram.com/sapere.aude.asesorias" class="site-footer__social" target="_blank" rel="noopener">@sapere.aude.asesorias</a>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Plataforma">
+        <h3 class="site-footer__heading">Plataforma</h3>
+        <ul>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="formacion.html">Cursos de idiomas</a></li>
+          <li><a href="recursos.html">Recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Empresa">
+        <h3 class="site-footer__heading">Empresa</h3>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Cuenta">
+        <h3 class="site-footer__heading">Cuenta</h3>
+        <ul>
+          <li><a href="login.html">Iniciar sesión</a></li>
+          <li><a href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__bottom">
+        <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Modal de detalle de curso: muestra descripción, módulos, inscripción
+       y progreso, según el estado del usuario (ver initFormacionPage() en
+       js/main.js). Misma estructura que el modal de reservas.html. -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-body">
+      <button type="button" class="modal__close" id="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Script del proyecto (compartido por todas las páginas) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>

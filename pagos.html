@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagos — SAPERE AUDE</title>
+  <meta name="description" content="Pagos de SAPERE AUDE: consulta los programas y productos disponibles y el registro de tus pagos.">
+  <meta name="robots" content="noindex">
+
+  <!--
+    Guardia de acceso (idéntico al de dashboard.html, reservas.html, chat.html,
+    perfil.html y seguimiento.html, ver comentario allá): si no hay una sesión
+    válida en 'sapereaude_sesion', se redirige de inmediato a login.html antes
+    de pintar contenido privado. La lógica completa de Pagos
+    vive en main.js — ver initPagosPage(). Reutiliza el mismo sistema de
+    autenticación de la sección 7 de main.js: no se crea un login aparte.
+  -->
+  <script>
+    (function () {
+      try {
+        var raw = window.localStorage.getItem('sapereaude_sesion');
+        var session = raw ? JSON.parse(raw) : null;
+        if (!session || !session.loggedIn || !session.userId) {
+          window.location.replace('login.html');
+        } else if (session.rol === 'administrador') {
+          // El Panel de Administración es una interfaz aparte (ver admin.html):
+          // una cuenta con rol "administrador" no usa este panel de usuario.
+          window.location.replace('admin.html');
+        }
+      } catch (error) {
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos del proyecto (compartida por todas las páginas) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="dashboard" id="dashboard">
+
+    <!-- Fondo oscuro tras el sidebar cuando está abierto en móvil -->
+    <div class="dashboard__overlay" id="dashboard-overlay"></div>
+
+    <!-- ======================================================
+         SIDEBAR (misma estructura que dashboard.html, reservas.html,
+         chat.html, perfil.html y seguimiento.html)
+         ====================================================== -->
+    <aside class="dashboard__sidebar" id="dashboard-sidebar">
+
+      <div class="dashboard__sidebar-header">
+        <a href="index.html" class="logo" aria-label="SAPERE AUDE — Ir al sitio principal">
+          <span class="logo__mark">SA</span>
+          <span class="logo__text">SAPERE AUDE</span>
+        </a>
+        <button type="button" class="dashboard-sidebar-close" id="dashboard-sidebar-close" aria-label="Cerrar menú">&times;</button>
+      </div>
+
+      <nav class="dashboard-nav" aria-label="Navegación del panel">
+        <ul class="dashboard-nav__list">
+          <li><a href="dashboard.html" class="dashboard-nav__link">Inicio</a></li>
+          <li><a href="reservas.html" class="dashboard-nav__link">Mis reservas</a></li>
+          <li><a href="formacion.html" class="dashboard-nav__link">Formación</a></li>
+          <li><a href="formacion.html#mis-cursos" class="dashboard-nav__link">Mis cursos</a></li>
+          <li><a href="recursos.html" class="dashboard-nav__link">Recursos</a></li>
+          <li><a href="chat.html" class="dashboard-nav__link">Mensajes</a></li>
+          <li><a href="seguimiento.html" class="dashboard-nav__link">Seguimiento</a></li>
+          <li><a href="pagos.html" class="dashboard-nav__link is-active" aria-current="page">Pagos</a></li>
+          <li><a href="perfil.html" class="dashboard-nav__link">Mi perfil</a></li>
+        </ul>
+      </nav>
+
+      <div class="dashboard-sidebar__footer">
+        <button type="button" class="dashboard-nav__logout" id="dashboard-logout">Cerrar sesión</button>
+      </div>
+
+    </aside>
+
+    <!-- ======================================================
+         COLUMNA PRINCIPAL (topbar + contenido)
+         ====================================================== -->
+    <div class="dashboard__body">
+
+      <!-- TOPBAR (misma estructura que dashboard.html, rellenada por initDashboardPage()) -->
+      <header class="dashboard__topbar">
+        <button type="button" class="dashboard-sidebar-toggle" id="dashboard-sidebar-toggle" aria-expanded="false" aria-controls="dashboard-sidebar">
+          <span></span><span></span><span></span>
+          <span class="sr-only">Abrir menú del panel</span>
+        </button>
+
+        <p class="dashboard__topbar-title">Pagos</p>
+
+        <div class="dashboard__topbar-actions">
+          <button type="button" class="dashboard-notif" aria-label="Notificaciones">
+            <span class="dashboard-notif__dot" aria-hidden="true"></span>
+          </button>
+
+          <div class="dashboard-user">
+            <span class="dashboard-user__avatar" id="dashboard-avatar" aria-hidden="true">--</span>
+            <span class="dashboard-user__info">
+              <span class="dashboard-user__name" id="dashboard-user-name">Cargando…</span>
+              <span class="dashboard-user__type" id="dashboard-user-type">—</span>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="dashboard__main" id="main-content">
+
+        <!-- Todo el bloque de Pagos vive dentro de #pagos-page: es el
+             elemento que initPagosPage() usa como guardia para saber que
+             está en esta página (ver js/main.js). -->
+        <section id="pagos-page">
+
+          <section class="dashboard-welcome">
+            <h1 class="dashboard-welcome__title">Pagos</h1>
+            <p class="dashboard-welcome__text">
+              Consulta los programas y productos de SAPERE AUDE, registra el pago de tus
+              procesos y revisa tu historial, todo desde un mismo lugar.
+            </p>
+          </section>
+
+          <!-- ======================================================
+               CATÁLOGO DE PRODUCTOS
+               Productos y programas reales de SAPERE AUDE, con precios
+               reales en pesos colombianos (COP). A diferencia del
+               registro de pagos de más abajo (que parte de reservas y
+               cursos ya generados por el propio usuario), esta sección
+               presenta la oferta de la plataforma. Como este prototipo no está
+               conectado a una pasarela de pago, cada producto enlaza al
+               formulario de Contacto para solicitar el proceso de compra.
+               ====================================================== -->
+          <section class="dashboard-section" id="catalogo-productos" aria-labelledby="catalogo-productos-title">
+            <div class="dashboard-section__header">
+              <h2 id="catalogo-productos-title" class="section__title">Programas y productos</h2>
+            </div>
+
+            <div class="courses__grid" id="catalogo-productos-grid">
+
+              <article class="course-card producto-card">
+                <div class="course-card__meta">
+                  <span class="tag tag--bronze">Formación ejecutiva</span>
+                </div>
+                <h3 class="course-card__title">Liderazgo de Alto Impacto y Gestión de Equipos</h3>
+                <p class="course-card__text">
+                  Programa de formación ejecutiva de nivel profesional diseñado bajo los
+                  principios de la andragogía (aprendizaje para adultos), el modelo ADDIE y
+                  el aprendizaje basado en problemas (PBL). Responde a la necesidad de las
+                  organizaciones modernas de contar con líderes capaces de navegar entornos
+                  volátiles e inciertos (VUCA/BANI), combinando la efectividad estratégica
+                  con una profunda inteligencia emocional y humana. Con una metodología
+                  100% práctica y orientada a la aplicación inmediata, los participantes
+                  transformarán su estilo de dirección, pasando de la supervisión
+                  tradicional al liderazgo transformacional.
+                </p>
+                <div class="course-card__footer producto-card__footer">
+                  <span class="producto-card__precio">$100.000 COP</span>
+                  <a href="contacto.html" class="btn btn--secondary">Solicitar información</a>
+                </div>
+              </article>
+
+              <article class="course-card producto-card">
+                <div class="course-card__meta">
+                  <span class="tag tag--outline">Idiomas</span>
+                </div>
+                <h3 class="course-card__title">Libros de vocabulario en inglés y francés</h3>
+                <p class="course-card__text">
+                  Libros de vocabulario para reforzar el aprendizaje de inglés y francés.
+                </p>
+                <div class="course-card__footer producto-card__footer">
+                  <span class="producto-card__precio">Desde $26.292 COP</span>
+                  <a href="contacto.html" class="btn btn--secondary">Solicitar información</a>
+                </div>
+              </article>
+
+              <article class="course-card producto-card">
+                <div class="course-card__meta">
+                  <span class="tag tag--outline">Herramienta</span>
+                </div>
+                <h3 class="course-card__title">Pack Universitario</h3>
+                <p class="course-card__text">Incluye:</p>
+                <ul class="benefits-list">
+                  <li>Planificador semanal</li>
+                  <li>Planificador de exámenes / parciales</li>
+                  <li>Checklist de trabajos y tareas</li>
+                  <li>Técnicas de estudio</li>
+                  <li>Plantilla para tomar apuntes</li>
+                  <li>Hoja de objetivos</li>
+                  <li>Tracker de hábitos</li>
+                  <li>Guía de prompts para estudiar con IA</li>
+                </ul>
+                <div class="course-card__footer producto-card__footer">
+                  <span class="producto-card__precio">$20.000 COP</span>
+                  <a href="contacto.html" class="btn btn--secondary">Solicitar información</a>
+                </div>
+              </article>
+
+            </div>
+          </section>
+
+          <!-- ======================================================
+               REGISTRAR UN PAGO
+               ====================================================== -->
+          <section class="dashboard-section" id="pago-form-section" aria-labelledby="pago-form-title">
+            <div class="dashboard-section__header">
+              <h2 id="pago-form-title" class="section__title">Registrar un pago</h2>
+            </div>
+
+            <div class="dashboard-card">
+              <form class="form-grid" id="pago-form" novalidate>
+
+                <div class="form-group form-group--full">
+                  <label for="pago-proceso" class="form-label">Proceso</label>
+                  <select id="pago-proceso" name="proceso" class="form-select">
+                    <!-- Rellenado por poblarProcesos() en js/main.js a partir de
+                         las reservas confirmadas y los cursos inscritos reales
+                         del usuario, más una opción sin proceso asociado. -->
+                  </select>
+                  <p class="form-error" id="pago-proceso-error"></p>
+                </div>
+
+                <!-- Resumen del proceso elegido: se recalcula en cada cambio de
+                     #pago-proceso (ver actualizarResumen() en js/main.js). -->
+                <div class="form-group form-group--full">
+                  <div class="pago-resumen" id="pago-resumen" aria-live="polite"></div>
+                </div>
+
+                <div class="form-group form-group--full">
+                  <span class="form-label">Método de pago</span>
+                  <div class="user-type-group" id="pago-metodo-group">
+                    <input type="radio" id="pago-metodo-tarjeta" name="metodo-pago" value="Tarjeta">
+                    <label for="pago-metodo-tarjeta" class="user-type-option">Tarjeta</label>
+
+                    <input type="radio" id="pago-metodo-transferencia" name="metodo-pago" value="Transferencia">
+                    <label for="pago-metodo-transferencia" class="user-type-option">Transferencia</label>
+
+                    <input type="radio" id="pago-metodo-efectivo" name="metodo-pago" value="Efectivo">
+                    <label for="pago-metodo-efectivo" class="user-type-option">Efectivo</label>
+                  </div>
+                  <p class="form-error" id="pago-metodo-error"></p>
+                </div>
+
+                <!-- Campos de tarjeta: solo se muestran si el método elegido es
+                     "Tarjeta". initPagosPage() valida su formato en pantalla y los
+                     descarta: nunca se escriben en localStorage. -->
+                <div class="form-group form-group--full pago-tarjeta-campos" id="pago-tarjeta-campos" hidden>
+                  <p class="dashboard-card__hint">
+                    Los datos de la tarjeta no se guardan en ningún momento.
+                  </p>
+
+                  <div class="form-grid">
+                    <div class="form-group form-group--full">
+                      <label for="pago-tarjeta-nombre" class="form-label">Nombre en la tarjeta</label>
+                      <input type="text" id="pago-tarjeta-nombre" class="form-input" placeholder="Nombre como aparece en la tarjeta" autocomplete="off">
+                      <p class="form-error" id="pago-tarjeta-nombre-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="pago-tarjeta-numero" class="form-label">Número de tarjeta</label>
+                      <input type="text" id="pago-tarjeta-numero" class="form-input" placeholder="4111 1111 1111 1111" inputmode="numeric" autocomplete="off" maxlength="19">
+                      <p class="form-error" id="pago-tarjeta-numero-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="pago-tarjeta-vencimiento" class="form-label">Vencimiento</label>
+                      <input type="text" id="pago-tarjeta-vencimiento" class="form-input" placeholder="MM/AA" inputmode="numeric" autocomplete="off" maxlength="5">
+                      <p class="form-error" id="pago-tarjeta-vencimiento-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="pago-tarjeta-cvv" class="form-label">Código de seguridad</label>
+                      <input type="text" id="pago-tarjeta-cvv" class="form-input" placeholder="123" inputmode="numeric" autocomplete="off" maxlength="4">
+                      <p class="form-error" id="pago-tarjeta-cvv-error"></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group form-group--full form-actions">
+                  <button type="submit" class="btn btn--primary btn--lg">Registrar pago</button>
+                  <p class="form-error" id="pago-form-error"></p>
+                </div>
+
+              </form>
+
+              <!-- Rellenado por mostrarConfirmacionPago() en js/main.js tras
+                   registrar un pago. Misma estructura visual que
+                   #reserva-confirmacion en reservas.html. -->
+              <div class="reserva-confirmacion" id="pago-confirmacion" hidden></div>
+            </div>
+          </section>
+
+          <!-- ======================================================
+               MIS PAGOS
+               ====================================================== -->
+          <section class="dashboard-section" id="mis-pagos" aria-labelledby="mis-pagos-title">
+            <div class="dashboard-section__header">
+              <h2 id="mis-pagos-title" class="section__title">Mis pagos</h2>
+            </div>
+
+            <!-- Rellenado por renderMisPagos() en js/main.js -->
+            <div class="reservas-grid" id="mis-pagos-lista" hidden></div>
+
+            <div class="reservas-empty" id="mis-pagos-vacia" hidden>
+              <p>Todavía no tienes pagos registrados.</p>
+            </div>
+          </section>
+
+        </section>
+
+        <footer class="dashboard-footer">
+          <p>&copy; <span id="current-year">2026</span> SAPERE AUDE. Todos los derechos reservados.</p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal genérico para "Ver detalles" de un pago -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-body">
+      <button type="button" class="modal__close" id="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Script del proyecto (compartido por todas las páginas) -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>
